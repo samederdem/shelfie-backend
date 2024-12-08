@@ -11,7 +11,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
         "JOIN Review r ON r.book.id = gb.book.id " +
         "WHERE r.user.id = :userId " +
         "GROUP BY g.name " +
-        "ORDER BY COUNT(g.name) DESC")
+        "ORDER BY COUNT(g.name) DESC " +
+        "LIMIT 1")
     String findMostReadGenreByUserId(Long userId);
 
     @Query("SELECT new ie.shelf.shelfie.UserReviewDto(b.name, b.author, r.text, r.rating) " +

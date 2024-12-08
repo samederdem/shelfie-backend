@@ -13,5 +13,17 @@ public class UserReviewDto {
         this.rating = rating;
     }
 
-    // Getters and Setters
+    public String getBookTitle(){return bookTitle;}
+    public void setBookTitle(String bookTitle){this.bookTitle=bookTitle;}
+
+    public String getBookAuthor(){return bookAuthor;}
+    public void getBookAuthor(String bookAuthor){this.bookAuthor=bookAuthor;}
+
+    public String getText(){return text;}
+    public void setText(String text){this.text=text;}
+
+    public Integer getRating(){return rating;}
+    public void setRating(Integer rating){this.rating=rating;}
+
+    
 }
