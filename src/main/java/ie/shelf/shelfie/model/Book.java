@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "books")  // Explicit table name
@@ -22,6 +23,7 @@ public class Book {
     public String getName(){return name;}
     public void setName(String name){this.name=name;}
     
+    @Column(nullable = true)
     public String getAuthor(){return author;}
     public void setAuthor(String author){this.author=author;}
 

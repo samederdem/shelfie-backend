@@ -20,5 +20,11 @@ public class GroupUser {
     @JoinColumn(name = "user_id")  // Foreign Key to User table
     private User user;
 
-    // Getters and Setters
+    /*
+    public Group getGroup(){return group;}
+    public void setGroup(Group group){this.group=group;}
+
+    public User getUser(){return user;}
+    public void setUser(User user){this.user=user;}
+    */
 }

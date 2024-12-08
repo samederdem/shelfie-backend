@@ -18,11 +18,25 @@ public class Group {
 
     private String name;
     private String pp;
+    private String bio;
 
     @ManyToOne
     @JoinColumn(name = "admin")  // Foreign Key to User table (admin of the group)
     private User admin;
 
+    public Long getId(){return id;}
+    public void setId(Long id){this.id=id;}
 
-    // Getters and Setters
+    public String getName(){return name;}
+    public void setName(String name){this.name=name;}
+
+    public String getPp(){return pp;}
+    public void setPp(String pp){this.pp=pp;}
+
+    public String getBio(){return bio;}
+    public void setBio(String bio){this.bio=bio;}
+
+    public User getAdmin(){return admin;}
+    public void setAdmin(User admin){this.admin=admin;}
+
 }
