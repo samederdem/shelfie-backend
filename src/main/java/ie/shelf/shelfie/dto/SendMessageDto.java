@@ -1,12 +1,12 @@
 package ie.shelf.shelfie;
 
-public class SendMessageUserDto {
+public class SendMessageDto {
     private Long sender;
     private Long recv;
     private String text;
 
     // Constructors, Getters, and Setters
-    public SendMessageUserDto(Long sender, Long recv, String text) {
+    public SendMessageDto(Long sender, Long recv, String text) {
         this.sender= sender;
         this.recv=recv;
         this.text = text;
