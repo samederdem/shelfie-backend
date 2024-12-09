@@ -35,6 +35,4 @@ public class MessagesGroup {
 
     @CreationTimestamp
     private String time;
-
-    // Getters and Setters
 }
