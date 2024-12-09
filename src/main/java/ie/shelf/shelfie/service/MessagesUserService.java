@@ -17,7 +17,7 @@ public class MessagesUserService {
     public MessagesUserResponseDto getMessagesUser(Long userId, Long partnerId) {
         User partner = userRepository.findById(partnerId)
             .orElseThrow(() -> new RuntimeException("User not found with ID: " + partnerId));
-        List<MessageUserDto> messages = messagesUserRepository.getMessagesUser(userId, userId);
+        List<MessageUserDto> messages = messagesUserRepository.getMessagesUser(userId, partnerId);
         return new MessagesUserResponseDto(partner, messages);
 
     }

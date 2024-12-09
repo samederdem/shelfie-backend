@@ -25,15 +25,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     @Query("SELECT new ie.shelf.shelfie.MessagesOverviewDto(" +
-         "CASE WHEN mu.sender.id = :userId THEN mu.recv.id ELSE mu.sender.id END, " +
-       "u.name, u.pp, " +
-       "CASE WHEN mu.sender.id = :userId THEN 'You' ELSE u.name END, " +
-       "mu.text, mu.time, 'user') " +
-       "FROM MessagesUser mu " +
-       "JOIN mu.sender u " +
-       "WHERE mu.sender.id = :userId OR mu.recv.id = :userId " +
-       "AND mu.time = (SELECT MAX(mu2.time) FROM MessagesUser mu2 " +
-       "WHERE (mu2.sender.id = :userId AND mu2.recv = mu.recv) OR (mu2.recv.id = :userId AND mu2.sender = mu.sender))")
+        "CASE WHEN mu.sender.id = :userId THEN mu.recv.id ELSE mu.sender.id END, " +
+        "CASE WHEN mu.sender.id = :userId THEN mu.recv.name ELSE mu.sender.name END, " +
+        "CASE WHEN mu.sender.id = :userId THEN mu.recv.pp ELSE mu.sender.pp END, " +
+        "CASE WHEN mu.sender.id = :userId THEN 'You' ELSE u.name END, " +
+        "mu.text, mu.time, 'user') " +
+        "FROM MessagesUser mu " +
+        "JOIN mu.sender u " +
+        "WHERE mu.sender.id = :userId OR mu.recv.id = :userId " +
+        "AND mu.time = (SELECT MAX(mu2.time) FROM MessagesUser mu2 " +
+        "WHERE (mu2.sender.id = :userId AND mu2.recv = mu.recv) OR (mu2.recv.id = :userId AND mu2.sender = mu.sender))")
     List<MessagesOverviewDto> getMessagesOverviewUser(Long userId);
 
     @Query("SELECT new ie.shelf.shelfie.MessagesOverviewDto(" +
