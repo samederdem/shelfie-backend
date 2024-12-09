@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Comparator;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService {
 
@@ -42,6 +44,17 @@ public class UserService {
         // Optionally, you can sort combinedMessages if needed
         combinedMessages.sort(Comparator.comparing(MessagesOverviewDto::getTime));
 
-        return combinedMessages;
+        List<MessagesOverviewDto> uniqueMessages = combinedMessages.stream()
+        .collect(Collectors.toMap(
+            MessagesOverviewDto::getId,  // Key: id
+            message -> message,           // Value: the message itself
+            (existing, replacement) -> existing // If duplicate, keep the first occurrence
+        ))
+        .values()
+        .stream()
+        .collect(Collectors.toList());
+
+        return uniqueMessages;
+
     }
 }
