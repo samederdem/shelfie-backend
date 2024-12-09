@@ -38,7 +38,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT new ie.shelf.shelfie.MessagesOverviewDto(" +
           "g.id, g.name, g.pp, " +
-           "u.name, mg.text, mg.time, 'Group_message') " +
+           "u.name, mg.text, mg.time, 'group') " +
        "FROM MessagesGroup mg " +
        "JOIN mg.sender u " +
        "JOIN mg.recv g " +

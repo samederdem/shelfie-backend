@@ -13,11 +13,11 @@ public class MessagesUserController {
     @Autowired
     private MessagesUserService messagesUserService;
 
-    /*
+    
     @GetMapping("/user/{userId}/{partnerId}")
     public MessagesUserResponseDto getMessagesUser(@PathVariable Long userId, @PathVariable Long partnerId) {
         return messagesUserService.getMessagesUser(userId, partnerId);
     }
-    */
+    
 
 }

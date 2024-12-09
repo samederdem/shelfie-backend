@@ -12,23 +12,14 @@ public class MessageUserDto {
         this.time= time;
     }
 
-    /*
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id=id;}
+    
+    public Integer getSender() {return sender;}
+    public void setSender(Integer sender) {this.sender=sender;}
 
-    public String getName() {return name;}
-    public void setName(String name) {this.name=name;}
+    public String getText() {return text;}
+    public void setText(String text) {this.text=text;}
 
-    public String getPp() {return pp;}
-    public void setPp(String pp) {this.pp=pp;}
-
-    public String getLastMessage() {return lastMessage;}
-    public void setLastMessage(String lastMessage) {this.lastMessage=lastMessage;}
-
-    public String getLastMessageSender() {return lastMessageSender;}
-    public void setLastMessageSender(String lastMessageSender) {this.lastMessageSender=lastMessageSender;}
-
-    public String getType() {return type;}
-    public void setType(String type) {this.type=type;}
-    */
+    public String getTime() {return time;}
+    public void setTime(String time) {this.time=time;}
+    
 }

@@ -10,11 +10,17 @@ public class MessagesUserService {
 
     @Autowired
     private MessagesUserRepository messagesUserRepository;
-    /*
-    public MessagesUserResponseDto getMessagesUser(Long user_id, Long partner_id) {
 
+    @Autowired
+    private UserRepository userRepository;
+    
+    public MessagesUserResponseDto getMessagesUser(Long userId, Long partnerId) {
+        User partner = userRepository.findById(partnerId)
+            .orElseThrow(() -> new RuntimeException("User not found with ID: " + partnerId));
+        List<MessageUserDto> messages = messagesUserRepository.getMessagesUser(userId, userId);
+        return new MessagesUserResponseDto(partner, messages);
 
     }
-    */
+    
 
 }
