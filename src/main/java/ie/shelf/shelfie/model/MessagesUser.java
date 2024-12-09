@@ -30,5 +30,13 @@ public class MessagesUser {
     @CreationTimestamp
     private String time;
 
-    // Getters and Setters
+    public User getSender(){return sender;}
+    public void setSender(User sender){this.sender=sender;}
+
+    public User getRecv(){return recv;}
+    public void setRecv(User recv){this.recv=recv;}
+
+    public String getText(){return text;}
+    public void setText(String text){this.text=text;}
+
 }
