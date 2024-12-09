@@ -21,6 +21,10 @@ public class MessagesUserService {
         return new MessagesUserResponseDto(partner, messages);
 
     }
+
+    public MessagesUser sendMessageUser(MessagesUser message) {
+        return messagesUserRepository.save(message);
+    }
     
 
 }
