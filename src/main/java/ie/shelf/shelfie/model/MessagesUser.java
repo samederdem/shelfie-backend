@@ -13,6 +13,13 @@ import org.hibernate.annotations.CreationTimestamp;
 @Table(name = "messages_user")  // Explicit table name
 public class MessagesUser {
 
+    public MessagesUser(User recv, User sender, String text)
+    {
+        this.recv=recv;
+        this.sender=sender;
+        this.text=text;
+    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

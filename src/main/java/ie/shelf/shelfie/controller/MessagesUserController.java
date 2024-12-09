@@ -17,7 +17,7 @@ public class MessagesUserController {
     }
 
     @PostMapping("user/send")
-    public MessagesUser sendMessageUser(@RequestBody MessagesUser message) {
+    public MessagesUser sendMessageUser(@RequestBody SendMessageUserDto message) {
         return messagesUserService.sendMessageUser(message);
     }
     

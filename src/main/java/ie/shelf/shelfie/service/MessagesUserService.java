@@ -22,8 +22,11 @@ public class MessagesUserService {
 
     }
 
-    public MessagesUser sendMessageUser(MessagesUser message) {
-        return messagesUserRepository.save(message);
+    public MessagesUser sendMessageUser(SendMessageUserDto message) {
+        User sender=userRepository.findById(message.getSender()).orElseThrow(() -> new RuntimeException());
+        User recv=userRepository.findById(message.getRecv()).orElseThrow(() -> new RuntimeException());
+        
+        return messagesUserRepository.save(new MessagesUser(recv, sender, message.getText()));
     }
     
 
