@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.Comparator;
+import java.util.ArrayList;
 @Service
 public class UserService {
 
@@ -27,5 +28,20 @@ public class UserService {
         UserResponseDto response = new UserResponseDto(user.getId(), user.getName(), user.getPp(), user.getBio(), mostReadGenre, reviews);
 
         return response;
+    }
+
+    public List<MessagesOverviewDto> getMessagesOverview(Long userId) {
+        List<MessagesOverviewDto> userMessages = userRepository.getMessagesOverviewUser(userId);
+        List<MessagesOverviewDto> groupMessages = userRepository.getMessagesOverviewGroup(userId);
+        
+        // Combine the two lists
+        List<MessagesOverviewDto> combinedMessages = new ArrayList<>();
+        combinedMessages.addAll(userMessages);
+        combinedMessages.addAll(groupMessages);
+        
+        // Optionally, you can sort combinedMessages if needed
+        combinedMessages.sort(Comparator.comparing(MessagesOverviewDto::getTime));
+
+        return combinedMessages;
     }
 }
