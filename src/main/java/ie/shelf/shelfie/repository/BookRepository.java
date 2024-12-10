@@ -24,7 +24,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
         "WHERE r.book.id = :bookId")
     List<UserReviewDto> findReviewsByBookId(Long bookId);
 
-
+    List<Book> findByNameContainingIgnoreCase(String searchStr);
 /*
     @Query("SELECT new ie.shelf.shelfie.BookDto(b.id, b.name, b.author, AVG(r.rating), " +
            "(SELECT new ie.shelf.shelfie.UserReviewDto(r2.user.name, r2.text, r2.rating) " +

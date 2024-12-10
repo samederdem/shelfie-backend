@@ -32,4 +32,9 @@ public class BookService {
         int totalRating = reviews.stream().mapToInt(UserReviewDto::getRating).sum();
         return totalRating / reviews.size();
     }
+
+    public List<Book> searchBookByName(String searchStr)
+    {
+        return bookRepository.findByNameContainingIgnoreCase(searchStr);
+    }
 }
