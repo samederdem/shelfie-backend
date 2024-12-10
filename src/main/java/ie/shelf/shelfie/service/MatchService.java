@@ -16,13 +16,15 @@ public class MatchService {
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional
+
     public ResponseEntity<String> MatchUsers(Long userId1, Long userId2)
     {
         handleMatch(userId1, userId2);
         return ResponseEntity.ok("Matches table updates successfully");
     }
-    void handleMatch(Long id1, Long id2) {
+
+    @Transactional
+    private void handleMatch(Long id1, Long id2) {
         if (id1.equals(id2)) {
             throw new IllegalArgumentException("User cannot match with itself");
         }
@@ -37,6 +39,13 @@ public class MatchService {
             // Match exists, update state if it's 0
             userRepository.updateMatchState(id1, id2);
         }
+    }
+
+    @Transactional
+    public ResponseEntity<String> RejectMatchUsers(Long userId1, Long userId2)
+    {
+        userRepository.rejectMatch(userId1, userId2);
+        return ResponseEntity.ok("Matches table updates successfully");
     }
     
 }

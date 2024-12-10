@@ -54,25 +54,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<MessagesOverviewDto> getMessagesOverviewGroup(Long userId);
 
 
-    @Modifying
-    @Query(value = "WITH match_check AS ( " +
-                "   SELECT * FROM matches " +
-                "   WHERE (user1_id = :id1 AND user2_id = :id2 AND state = 0) " +
-                "   OR (user1_id = :id2 AND user2_id = :id1 AND state = 0) " +
-                "   LIMIT 1) " +
-                "INSERT INTO matches (user1_id, user2_id, state) " +
-                "SELECT :id1, :id2, 0 " +
-                "WHERE NOT EXISTS (SELECT 1 FROM match_check) " +
-                "ON CONFLICT (user1_id, user2_id) DO UPDATE " +
-                "SET state = CASE " +
-                "   WHEN matches.state = 0 AND matches.user1_id = :id2 AND matches.user2_id = :id1 THEN 1 " +
-                "   WHEN matches.state = 0 AND matches.user1_id = :id1 AND matches.user2_id = :id2 THEN 1 " +
-                "   ELSE matches.state " +
-                "END " +
-                "WHERE :id1 != :id2", nativeQuery = true)
-    void createOrUpdateMatch(Long id1, Long id2);
-
-
     @Query("SELECT new ie.shelf.shelfie.Match(m.user1, m.user2, m.state) FROM Match m WHERE (m.user1.id = :id1 AND m.user2.id = :id2) OR (m.user1.id = :id2 AND m.user2.id = :id1)")
     Optional<Match> findMatch(Long id1, Long id2);
 
@@ -87,6 +68,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void updateMatchState(Long id1, Long id2);
 
     // Handle match logic
+
+    @Modifying
+    @Query(value = "UPDATE matches " +
+                "SET state = -1 " +
+                "WHERE (user1_id = :id1 AND user2_id = :id2) " +
+                "OR (user1_id = :id2 AND user2_id = :id1)", nativeQuery = true)
+    void rejectMatch(Long id1,  Long id2);
 
 
 
