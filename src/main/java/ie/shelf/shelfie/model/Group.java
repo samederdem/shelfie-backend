@@ -24,6 +24,7 @@ public class Group {
     @JoinColumn(name = "admin")
     private User admin;
 
+    public Group(){}
     public Group(User admin, String name, String pp, String bio)
     {
         this.admin=admin;
