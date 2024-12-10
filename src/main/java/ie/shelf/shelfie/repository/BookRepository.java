@@ -3,6 +3,7 @@ package ie.shelf.shelfie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Modifying;
+//import org.springframework.data.jpa.repository.Transactional;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -46,14 +47,23 @@ public interface BookRepository extends JpaRepository<Book, Long> {
            "GROUP BY b.id " +
            "ORDER BY AVG(r.rating) DESC")
     List<BookDto> findBooksReviewedByUser(Long userId);*/
-
+    /*@Transactional
     @Modifying
     @Query(value = "INSERT INTO user_genre (user_id, genre_id, value) " +
-                   "SELECT :userId, bg.genre_id, :rating " +
-                   "FROM book_genre bg " +
-                   "WHERE bg.book_id = :bookId " +
-                   "ON CONFLICT (user_id, genre_id) DO UPDATE " +
-                   "SET value = user_genre.value + :rating", nativeQuery = true)
-    void updateUserGenre(Long userId, Long bookId, int rating);
+                "SELECT :userId, bg.genre_id, :rating " +
+                "FROM book_genre bg " +
+                "WHERE bg.book_id = :bookId " +
+                "ON CONFLICT (user_id, genre_id) DO UPDATE " +
+                "SET value = user_genre.value + :rating", nativeQuery = true)
+    void updateUserGenre(Long userId, Long bookId, int rating);*/
+    //@Transactional
+    @Modifying
+    @Query(value = "INSERT INTO genre_user (user_id, genre_id, value) " +
+                "SELECT :userId, bg.genre_id, :rating " +
+                "FROM genre_book bg " +
+                "WHERE bg.book_id = :bookId " +
+                "ON CONFLICT (user_id, genre_id) DO UPDATE " +
+                "SET value = genre_user.value + :rating", nativeQuery = true)
+    int updateUserGenre(Long userId, Long bookId, Integer rating);
 
 }
