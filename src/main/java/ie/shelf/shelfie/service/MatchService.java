@@ -33,7 +33,7 @@ public class MatchService {
             // Match exists, update state if it's 0
             userRepository.updateMatchState(id1, id2);
         }
-        
+
         return ResponseEntity.ok("Matches table updates successfully");
     }
 
@@ -45,4 +45,9 @@ public class MatchService {
         return ResponseEntity.ok("Matches table updates successfully");
     }
     
+    @Transactional
+    public ResponseEntity<String> MatchUserGroup(Long userId, Long groupId)
+    {
+        return ResponseEntity.ok("matches_group table updates successfully");
+    }
 }

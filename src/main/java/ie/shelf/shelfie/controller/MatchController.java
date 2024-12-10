@@ -24,4 +24,10 @@ public class MatchController {
     public ResponseEntity<String> RejectMatchUsers(@PathVariable Long userId1, @PathVariable Long userId2) {
         return matchService.RejectMatchUsers(userId1, userId2);
     }
+
+    @PostMapping("/group/{userId}/{groupId}")
+    public ResponseEntity<String> MatchUserGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+        return matchService.MatchUserGroup(userId, groupId);
+    }
+    
 }
