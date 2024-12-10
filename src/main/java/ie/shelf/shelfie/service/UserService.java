@@ -1,9 +1,8 @@
 package ie.shelf.shelfie;
 
-//import ie.shelf.shelfie.dto.UserResponseDto;
-//import ie.shelf.shelfie.dto.UserReviewDto;
-//import ie.shelf.shelfie.model.User;
-//import ie.shelf.shelfie.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +10,9 @@ import java.util.List;
 import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.Optional;
+
+
 
 @Service
 public class UserService {
@@ -57,4 +59,25 @@ public class UserService {
         return uniqueMessages;
 
     }
+    public ResponseEntity<String> editUserProfile(User updatedUser)
+    {
+        Optional<User> optionalUser = userRepository.findById(updatedUser.getId());
+
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        User existingUser = optionalUser.get();
+         if (updatedUser.getBio() != null) {
+            existingUser.setBio(updatedUser.getBio());
+        }
+        if (updatedUser.getPp() != null) {
+            existingUser.setPp(updatedUser.getPp());
+        }
+
+        userRepository.save(existingUser);
+
+        return ResponseEntity.ok("User updated successfully");
+    }
+    
 }
