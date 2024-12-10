@@ -59,8 +59,8 @@ public class BookService {
         Book book= optionalBook.get();
 
         reviewRepository.save(new Review(user, book, review.getRating(), review.getText()));
+        bookRepository.updateUserGenre(user.getId(), book.getId(), review.getRating());
         return ResponseEntity.ok("Review posted successfully");
     }
 
-    
 }

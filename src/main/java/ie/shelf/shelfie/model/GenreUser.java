@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "genre_user")  // Explicit table name
-public class GenreGroup {
+public class GenreUser {
 
     @Id
     @ManyToOne
@@ -30,4 +30,12 @@ public class GenreGroup {
         this.value=value;
     }
 
+    public User getUser(){return user;}
+    public void setBook(User user){this.user=user;}
+
+    public Genre getGenre(){return genre;}
+    public void setGenre(Genre genre){this.genre=genre;}    
+
+    public Integer getValue(){return value;}
+    public void setValue(Integer value){this.value=value;} 
 }
