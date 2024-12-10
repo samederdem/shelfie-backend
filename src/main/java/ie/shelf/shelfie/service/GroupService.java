@@ -43,7 +43,7 @@ public class GroupService {
         User admin= optionalAdmin.get();
 
         Group group = groupRepository.save(new Group(admin, groupInfo.getName(), groupInfo.getPp(), groupInfo.getBio()));
-        
+        groupRepository.insertGroupUser(admin.getId(), group.getId());
         groupRepository.insertGenresGroup(groupInfo.getGenres(), group.getId());
         return ResponseEntity.ok("Group created successfully");
 

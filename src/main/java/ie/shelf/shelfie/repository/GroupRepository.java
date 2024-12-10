@@ -18,7 +18,12 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
     @Modifying
     @Query(value = "INSERT INTO genre_group (group_id, genre_id) " +
                "SELECT :groupId, g.id " +
-               "FROM genre g " +
+               "FROM genres g " +
                "WHERE g.id IN :genreIds", nativeQuery = true)
     void insertGenresGroup(List<Long> genreIds, Long groupId);
+
+    @Modifying
+    @Query(value = "INSERT INTO group_user (user_id, group_id) " +
+               " VALUES(:adminId, :groupId)", nativeQuery = true)
+    void insertGroupUser(Long adminId, Long groupId);
 }
