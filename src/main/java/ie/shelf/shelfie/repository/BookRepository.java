@@ -17,12 +17,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
         "GROUP BY b.id")
     BookDto findBookDetailsById(Long bookId);*/
 
-
-    @Query("SELECT new ie.shelf.shelfie.UserReviewDto(b.name, b.author, r.text, r.rating) " +
+    @Query("SELECT new ie.shelf.shelfie.BookReviewDto( r.user.name,  r.text, r.rating ) " +
         "FROM Review r " +
         "JOIN r.book b " +
+        "JOIN r.user u " +
         "WHERE r.book.id = :bookId")
-    List<UserReviewDto> findReviewsByBookId(Long bookId);
+    List<BookReviewDto> findReviewsByBookId(Long bookId);
+
 
     List<Book> findByNameContainingIgnoreCase(String searchStr);
 /*

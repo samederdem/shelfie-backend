@@ -7,10 +7,10 @@ public class BookDto {
     private String name;
     private String author;
     private Integer rating;
-    private List<UserReviewDto> reviews;
+    private List<BookReviewDto> reviews;
 
     // Constructors, Getters, and Setters
-    public BookDto(Long id, String name, String author, Integer rating, List<UserReviewDto> reviews) {
+    public BookDto(Long id, String name, String author, Integer rating, List<BookReviewDto> reviews) {
         this.id = id;
         this.author = author;
         this.name = name;
@@ -29,7 +29,7 @@ public class BookDto {
     public Integer getRating() {return rating;}
     public void setRating(Integer rating) {this.rating=rating;}
 
-    public List<UserReviewDto> getReviews() {return reviews;}
-    public void setReviews(List<UserReviewDto> reviews) {this.reviews=reviews;}
+    public List<BookReviewDto> getReviews() {return reviews;}
+    public void setReviews(List<BookReviewDto> reviews) {this.reviews=reviews;}
 }
 
