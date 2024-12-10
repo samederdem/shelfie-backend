@@ -6,6 +6,7 @@ public class SendMessageDto {
     private String text;
 
     // Constructors, Getters, and Setters
+    public SendMessageDto() {}
     public SendMessageDto(Long sender, Long recv, String text) {
         this.sender= sender;
         this.recv=recv;

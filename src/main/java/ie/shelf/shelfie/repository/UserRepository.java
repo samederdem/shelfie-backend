@@ -58,23 +58,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<Match> findMatch(Long id1, Long id2);
 
     // Native query to insert a new match if no existing match is found
+
     @Modifying
     @Query(value = "INSERT INTO matches (user1_id, user2_id, state) VALUES (:id1, :id2, 0)", nativeQuery = true)
     void insertMatch(Long id1, Long id2);
-
     // Native query to update the state to 1 if a match with state = 0 exists
     @Modifying
     @Query(value = "UPDATE matches SET state = 1 WHERE (user1_id = :id1 AND user2_id = :id2 OR user1_id = :id2 AND user2_id = :id1) AND state = 0", nativeQuery = true)
     void updateMatchState(Long id1, Long id2);
 
-    // Handle match logic
-
-    /*@Modifying
-    @Query(value = "UPDATE matches " +
-                "SET state = -1 " +
-                "WHERE (user1_id = :id1 AND user2_id = :id2) " +
-                "OR (user1_id = :id2 AND user2_id = :id1)", nativeQuery = true)
-    void rejectMatch(Long id1,  Long id2);*/
     @Modifying
     @Query(value = "INSERT INTO matches (user1_id, user2_id, state) VALUES (:id1, :id2, -1)", nativeQuery = true)
     void insertMatchReject(Long id1, Long id2);
@@ -82,6 +74,27 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "UPDATE matches SET state = -1 WHERE (user1_id = :id1 AND user2_id = :id2 OR user1_id = :id2 AND user2_id = :id1)", nativeQuery = true)
     void updateMatchReject(Long id1, Long id2);
+
+    @Query("SELECT new ie.shelf.shelfie.MatchGroup(m.user, m.group, m.state) FROM MatchGroup m WHERE m.user.id = :user AND m.group.id = :group")
+    Optional<MatchGroup> findMatchGroup(Long user, Long group);
+
+    // Native query to insert a new match if no existing match is found
+    @Modifying
+    @Query(value = "INSERT INTO matches_group (user_id, group_id, state) VALUES (:user, :group, 0)", nativeQuery = true)
+    void insertMatchGroup(Long user, Long group);
+
+    // Native query to update the state to 1 if a match with state = 0 exists
+    @Modifying
+    @Query(value = "UPDATE matches_group SET state = 1 WHERE user_id = :user AND group_id = :group AND state = 0", nativeQuery = true)
+    void updateMatchGroupState(Long user, Long group);
+
+    @Modifying
+    @Query(value = "INSERT INTO matches_group (user_id, group_id, state) VALUES (:user, :group, -1)", nativeQuery = true)
+    void insertMatchGroupReject(Long user, Long group);
+
+    @Modifying
+    @Query(value = "UPDATE matches_group SET state = -1 WHERE (user_id = :user AND group_id = :group)", nativeQuery = true)
+    void updateMatchGroupReject(Long user, Long group);
 
 
     @Query("SELECT ie.shelf.shelfie.MatchRequestDto(m.user1) FROM Match m WHERE m.user2.id=:userId AND m.state=0")
