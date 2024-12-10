@@ -9,7 +9,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "matches")
 public class Match {
-
+    public Match(){}
+    public Match(User user1, User user2, Integer state){
+        this.user1=user1;
+        this.user2=user2;
+        this.state=state;
+    }
     @Id
     @ManyToOne
     @JoinColumn(name = "user1_id")  // Foreign Key to Book table
@@ -19,7 +24,6 @@ public class Match {
     @ManyToOne
     @JoinColumn(name = "user2_id")
     private User user2;  // Genre as part of the composite primary key
-
     private Integer state;
 
     public User getUser1(){return user1;}

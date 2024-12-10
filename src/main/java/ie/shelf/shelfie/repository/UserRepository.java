@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Modifying;
 import java.util.List;
+import java.util.Optional;
+
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -51,20 +53,41 @@ public interface UserRepository extends JpaRepository<User, Long> {
                       "AND (mg2.sender.id = :userId OR mg2.recv.id = :userId))")
     List<MessagesOverviewDto> getMessagesOverviewGroup(Long userId);
 
+
     @Modifying
-    @Query(value = "WITH match_check AS (" +
-               "   SELECT * FROM matches " +
-               "   WHERE (user1 = :id1 AND user2 = :id2) " +
-               "   OR (user1 = :id2 AND user2 = :id1) " +
-               "   FOR UPDATE SKIP LOCKED) " +
-               "INSERT INTO matches (user1, user2, state) " +
-               "SELECT :id1, :id2, 0 " +
-               "WHERE NOT EXISTS (SELECT 1 FROM match_check) " +
-               "ON CONFLICT (user1, user2) DO UPDATE " +
-               "SET state = CASE " +
-               "   WHEN matches.state = 0 AND matches.user1 = :id2 AND matches.user2 = :id1 THEN 1 " +
-               "   ELSE matches.state " +
-               "END", nativeQuery = true)
+    @Query(value = "WITH match_check AS ( " +
+                "   SELECT * FROM matches " +
+                "   WHERE (user1_id = :id1 AND user2_id = :id2 AND state = 0) " +
+                "   OR (user1_id = :id2 AND user2_id = :id1 AND state = 0) " +
+                "   LIMIT 1) " +
+                "INSERT INTO matches (user1_id, user2_id, state) " +
+                "SELECT :id1, :id2, 0 " +
+                "WHERE NOT EXISTS (SELECT 1 FROM match_check) " +
+                "ON CONFLICT (user1_id, user2_id) DO UPDATE " +
+                "SET state = CASE " +
+                "   WHEN matches.state = 0 AND matches.user1_id = :id2 AND matches.user2_id = :id1 THEN 1 " +
+                "   WHEN matches.state = 0 AND matches.user1_id = :id1 AND matches.user2_id = :id2 THEN 1 " +
+                "   ELSE matches.state " +
+                "END " +
+                "WHERE :id1 != :id2", nativeQuery = true)
     void createOrUpdateMatch(Long id1, Long id2);
+
+
+    @Query("SELECT new ie.shelf.shelfie.Match(m.user1, m.user2, m.state) FROM Match m WHERE (m.user1.id = :id1 AND m.user2.id = :id2) OR (m.user1.id = :id2 AND m.user2.id = :id1)")
+    Optional<Match> findMatch(Long id1, Long id2);
+
+    // Native query to insert a new match if no existing match is found
+    @Modifying
+    @Query(value = "INSERT INTO matches (user1_id, user2_id, state) VALUES (:id1, :id2, 0)", nativeQuery = true)
+    void insertMatch(Long id1, Long id2);
+
+    // Native query to update the state to 1 if a match with state = 0 exists
+    @Modifying
+    @Query(value = "UPDATE matches SET state = 1 WHERE (user1_id = :id1 AND user2_id = :id2 OR user1_id = :id2 AND user2_id = :id1) AND state = 0", nativeQuery = true)
+    void updateMatchState(Long id1, Long id2);
+
+    // Handle match logic
+
+
 
 }
