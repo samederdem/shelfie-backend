@@ -47,7 +47,8 @@ public class BookService {
 
     public List<Book> searchBookByName(String searchStr)
     {
-        return bookRepository.findByNameContainingIgnoreCase(searchStr);
+        List<Book> books = bookRepository.findByNameContainingIgnoreCase(searchStr);
+        return books.size() > 20 ? books.subList(0, 20) : books;
     }
     
     @Transactional

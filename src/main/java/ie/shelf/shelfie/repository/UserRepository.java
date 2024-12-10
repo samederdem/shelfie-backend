@@ -69,13 +69,19 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Handle match logic
 
-    @Modifying
+    /*@Modifying
     @Query(value = "UPDATE matches " +
                 "SET state = -1 " +
                 "WHERE (user1_id = :id1 AND user2_id = :id2) " +
                 "OR (user1_id = :id2 AND user2_id = :id1)", nativeQuery = true)
-    void rejectMatch(Long id1,  Long id2);
+    void rejectMatch(Long id1,  Long id2);*/
+    @Modifying
+    @Query(value = "INSERT INTO matches (user1_id, user2_id, state) VALUES (:id1, :id2, -1)", nativeQuery = true)
+    void insertMatchReject(Long id1, Long id2);
 
+    @Modifying
+    @Query(value = "UPDATE matches SET state = -1 WHERE (user1_id = :id1 AND user2_id = :id2 OR user1_id = :id2 AND user2_id = :id1)", nativeQuery = true)
+    void updateMatchReject(Long id1, Long id2);
 
 
 }
