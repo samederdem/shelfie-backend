@@ -96,14 +96,15 @@ public class MatchService {
         return ResponseEntity.ok("matches_group table updates successfully");
     }
 
-    public List<User> getMatchRequestsUser(Long userId)
+    public List<MatchRequestDto> getMatchRequests(Long userId)
     {
-        return userRepository.getMatchRequestsUser(userId);
+        List<MatchRequestDto> userMatches = userRepository.getMatchRequestsUser(userId);
+        List<MatchRequestDto> groupMatches = userRepository.getMatchRequestsGroup(userId);
+        List<MatchRequestDto> combinedMatches = new ArrayList<>();
+        combinedMatches.addAll(userMatches);
+        combinedMatches.addAll(groupMatches);
+        return combinedMatches;
     }
 
-    public List<MatchRequestDto> getMatchRequestsGroup(Long userId)
-    {
-
-        return userRepository.getMatchRequestsGroup(userId);
-    }
+    
 }
