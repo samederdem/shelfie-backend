@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -17,7 +18,7 @@ public class MatchService {
     private UserRepository userRepository;
 
     @Transactional
-    public ResponseEntity<String> MatchUsers(Long id1, Long id2)
+    public ResponseEntity<String> matchUsers(Long id1, Long id2)
     {
         if (id1.equals(id2)) {
             throw new IllegalArgumentException("User cannot match with itself");
@@ -39,7 +40,7 @@ public class MatchService {
 
 
     @Transactional
-    public ResponseEntity<String> RejectMatchUsers(Long id1, Long id2)
+    public ResponseEntity<String> rejectMatchUsers(Long id1, Long id2)
     {
         if (id1.equals(id2)) {
             throw new IllegalArgumentException("User cannot reject itself");
@@ -58,14 +59,24 @@ public class MatchService {
     }
     
     @Transactional
-    public ResponseEntity<String> MatchUserGroup(Long userId, Long groupId)
+    public ResponseEntity<String> matchUserGroup(Long userId, Long groupId)
     {
         return ResponseEntity.ok("matches_group table updates successfully");
     }
 
     @Transactional
-    public ResponseEntity<String> RejectMatchUserGroup(Long userId, Long groupId)
+    public ResponseEntity<String> rejectMatchUserGroup(Long userId, Long groupId)
     {
         return ResponseEntity.ok("matches_group table updates successfully");
+    }
+
+    public List<MatchRequestDto> getMatchRequests(Long userId)
+    {
+        List<MatchRequestDto> userMatches = userRepository.getMatchRequestsUser(userId);
+        List<MatchRequestDto> groupMatches = userRepository.getMatchRequestsGroup(userId);
+        List<MatchRequestDto> combinedMatches = new ArrayList<>();
+        combinedMatches.addAll(userMatches);
+        combinedMatches.addAll(groupMatches);
+        return combinedMatches;
     }
 }

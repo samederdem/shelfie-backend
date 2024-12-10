@@ -16,23 +16,28 @@ public class MatchController {
     private MatchService matchService;
 
     @PostMapping("/user/{userId1}/{userId2}")
-    public ResponseEntity<String> MatchUsers(@PathVariable Long userId1, @PathVariable Long userId2) {
-        return matchService.MatchUsers(userId1, userId2);
+    public ResponseEntity<String> matchUsers(@PathVariable Long userId1, @PathVariable Long userId2) {
+        return matchService.matchUsers(userId1, userId2);
     }
 
     @PostMapping("/user/reject/{userId1}/{userId2}")
-    public ResponseEntity<String> RejectMatchUsers(@PathVariable Long userId1, @PathVariable Long userId2) {
-        return matchService.RejectMatchUsers(userId1, userId2);
+    public ResponseEntity<String> rejectMatchUsers(@PathVariable Long userId1, @PathVariable Long userId2) {
+        return matchService.rejectMatchUsers(userId1, userId2);
     }
 
     @PostMapping("/group/{userId}/{groupId}")
-    public ResponseEntity<String> MatchUserGroup(@PathVariable Long userId, @PathVariable Long groupId) {
-        return matchService.MatchUserGroup(userId, groupId);
+    public ResponseEntity<String> matchUserGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+        return matchService.matchUserGroup(userId, groupId);
     }
 
     @PostMapping("/group/reject/{userId}/{groupId}")
-    public ResponseEntity<String> RejectMatchUserGroup(@PathVariable Long userId, @PathVariable Long groupId) {
-        return matchService.RejectMatchUserGroup(userId, groupId);
+    public ResponseEntity<String> rejectMatchUserGroup(@PathVariable Long userId, @PathVariable Long groupId) {
+        return matchService.rejectMatchUserGroup(userId, groupId);
+    }
+
+    @PostMapping("/all/{userId}")
+    public List<MatchRequestDto> getMatchRequests(@PathVariable Long userId) {
+        return matchService.getMatchRequests(userId);
     }
     
 }
