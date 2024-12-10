@@ -15,6 +15,8 @@ public class MatchService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MessagesUserService messagesUserService;
 
     @Transactional
     public ResponseEntity<String> MatchUsers(Long id1, Long id2)
@@ -31,6 +33,9 @@ public class MatchService {
             userRepository.insertMatch(id1, id2);
         } else {
             // Match exists, update state if it's 0
+            String matchStr = "It's a match!";
+            SendMessageDto tmp = new SendMessageDto(id1,id2, matchStr);
+            messagesUserService.sendMessageUser(tmp);
             userRepository.updateMatchState(id1, id2);
         }
 
@@ -60,12 +65,33 @@ public class MatchService {
     @Transactional
     public ResponseEntity<String> MatchUserGroup(Long userId, Long groupId)
     {
+
+        // Check if a match exists
+        Optional<MatchGroup> existingMatch = userRepository.findMatchGroup(userId, groupId);
+
+        if (existingMatch.isEmpty()) {
+            // No match exists, insert a new match with state = 0
+            userRepository.insertMatchGroup(userId, groupId);
+        } else {
+            // Match exists, update state if it's 0
+            userRepository.updateMatchGroupState(userId, groupId);
+        }
         return ResponseEntity.ok("matches_group table updates successfully");
     }
 
     @Transactional
     public ResponseEntity<String> RejectMatchUserGroup(Long userId, Long groupId)
     {
+            Optional<MatchGroup> existingMatch = userRepository.findMatchGroup(userId, groupId);
+
+        if (existingMatch.isEmpty()) {
+            // No match exists, insert a new match with state = 0
+            userRepository.insertMatchGroupReject(userId, groupId);
+        } else {
+            // Match exists, update state if it's 0
+
+            userRepository.updateMatchGroupReject(userId, groupId);
+        }
         return ResponseEntity.ok("matches_group table updates successfully");
     }
 }
