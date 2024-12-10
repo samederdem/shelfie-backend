@@ -62,4 +62,10 @@ public class MatchService {
     {
         return ResponseEntity.ok("matches_group table updates successfully");
     }
+
+    @Transactional
+    public ResponseEntity<String> RejectMatchUserGroup(Long userId, Long groupId)
+    {
+        return ResponseEntity.ok("matches_group table updates successfully");
+    }
 }
