@@ -1,12 +1,10 @@
 package ie.shelf.shelfie;
 
-//import ie.shelf.shelfie.dto.UserResponseDto;
-//import ie.shelf.shelfie.service.UserService;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/group")
@@ -18,5 +16,11 @@ public class GroupController {
     @GetMapping("/{groupId}")
     public GroupResponseDto getGroupDetails(@PathVariable Long groupId) {
         return groupService.getGroupDetails(groupId);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createGroup(@RequestBody CreateGroupDto groupInfo)
+    {
+        return groupService.createGroup(groupInfo);
     }
 }

@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "groups")  // Explicit table name
+@Table(name = "groups")
 public class Group {
 
     @Id
@@ -21,9 +21,16 @@ public class Group {
     private String bio;
 
     @ManyToOne
-    @JoinColumn(name = "admin")  // Foreign Key to User table (admin of the group)
+    @JoinColumn(name = "admin")
     private User admin;
 
+    public Group(User admin, String name, String pp, String bio)
+    {
+        this.admin=admin;
+        this.name=name;
+        this.pp=pp;
+        this.bio=bio;
+    }
     public Long getId(){return id;}
     public void setId(Long id){this.id=id;}
 
