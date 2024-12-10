@@ -39,10 +39,22 @@ public class MatchService {
 
 
     @Transactional
-    public ResponseEntity<String> RejectMatchUsers(Long userId1, Long userId2)
+    public ResponseEntity<String> RejectMatchUsers(Long id1, Long id2)
     {
-        userRepository.rejectMatch(userId1, userId2);
+        if (id1.equals(id2)) {
+            throw new IllegalArgumentException("User cannot reject itself");
+        }
+
+        // Check if a match exists
+        Optional<Match> existingMatch = userRepository.findMatch(id1, id2);
+
+        if (existingMatch.isEmpty()) {
+            userRepository.insertMatchReject(id1, id2);
+        } else {
+            userRepository.updateMatchReject(id1, id2);
+        }
         return ResponseEntity.ok("Matches table updates successfully");
+
     }
     
 }
