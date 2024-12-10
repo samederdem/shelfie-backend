@@ -3,6 +3,7 @@ package ie.shelf.shelfie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Modifying;
 import java.util.List;
 
 @Repository
@@ -50,6 +51,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
                       "AND (mg2.sender.id = :userId OR mg2.recv.id = :userId))")
     List<MessagesOverviewDto> getMessagesOverviewGroup(Long userId);
 
-
+    @Modifying
+    @Query(value = "WITH match_check AS (" +
+               "   SELECT * FROM matches " +
+               "   WHERE (user1 = :id1 AND user2 = :id2) " +
+               "   OR (user1 = :id2 AND user2 = :id1) " +
+               "   FOR UPDATE SKIP LOCKED) " +
+               "INSERT INTO matches (user1, user2, state) " +
+               "SELECT :id1, :id2, 0 " +
+               "WHERE NOT EXISTS (SELECT 1 FROM match_check) " +
+               "ON CONFLICT (user1, user2) DO UPDATE " +
+               "SET state = CASE " +
+               "   WHEN matches.state = 0 AND matches.user1 = :id2 AND matches.user2 = :id1 THEN 1 " +
+               "   ELSE matches.state " +
+               "END", nativeQuery = true)
+    void createOrUpdateMatch(Long id1, Long id2);
 
 }
