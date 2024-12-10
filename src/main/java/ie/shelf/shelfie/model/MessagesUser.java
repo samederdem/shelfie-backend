@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Table(name = "messages_user")  // Explicit table name
 public class MessagesUser {
 
+    public MessagesUser(){}
     public MessagesUser(User recv, User sender, String text)
     {
         this.recv=recv;

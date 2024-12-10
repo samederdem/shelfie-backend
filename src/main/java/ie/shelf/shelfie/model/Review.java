@@ -27,6 +27,7 @@ public class Review {
     private Integer rating;  // Rating between 0 and 10
     private String text;
 
+    public Review(){}
     public Review(User user, Book book, Integer rating, String text)
     {
         this.user=user;

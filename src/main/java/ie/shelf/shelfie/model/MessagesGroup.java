@@ -13,6 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Table(name = "messages_group")  // Explicit table name
 public class MessagesGroup {
 
+    public MessagesGroup(){}
     public MessagesGroup(Group recv, User sender, String text)
     {
         this.recv=recv;
