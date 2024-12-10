@@ -44,11 +44,7 @@ public class GroupService {
 
         Group group = groupRepository.save(new Group(admin, groupInfo.getName(), groupInfo.getPp(), groupInfo.getBio()));
         
-
-        for (Long genreId: groupInfo.getGenres())
-        {
-            groupRepository.insertGenreGroup(genreId, group.getId());
-        }
+        groupRepository.insertGenresGroup(groupInfo.getGenres(), group.getId());
         return ResponseEntity.ok("Group created successfully");
 
 

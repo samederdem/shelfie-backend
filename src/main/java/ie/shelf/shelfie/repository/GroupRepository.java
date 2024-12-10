@@ -20,5 +20,5 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
                "SELECT :groupId, g.id " +
                "FROM genre g " +
                "WHERE g.id IN :genreIds", nativeQuery = true)
-    void insertGenreGroup(Long genreIds, Long groupId);
+    void insertGenresGroup(List<Long> genreIds, Long groupId);
 }
