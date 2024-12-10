@@ -35,9 +35,14 @@ public class MatchController {
         return matchService.rejectMatchUserGroup(userId, groupId);
     }
 
-    @GetMapping("/all/{userId}")
-    public List<MatchRequestDto> getMatchRequests(@PathVariable Long userId) {
-        return matchService.getMatchRequests(userId);
+    @GetMapping("/all/user/{userId}")
+    public List<User> getMatchRequestsUser(@PathVariable Long userId) {
+        return matchService.getMatchRequestsUser(userId);
+    }
+
+    @GetMapping("/all/group/{userId}")
+    public List<MatchRequestDto> getMatchRequestsGroup(@PathVariable Long userId) {
+        return matchService.getMatchRequestsGroup(userId);
     }
     
 }
