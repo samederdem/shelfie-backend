@@ -1,9 +1,13 @@
 package ie.shelf.shelfie;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -11,6 +15,11 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public BookDto getBookDetails(Long bookId) {
         // Fetch Book details from the BookRepository
@@ -37,4 +46,21 @@ public class BookService {
     {
         return bookRepository.findByNameContainingIgnoreCase(searchStr);
     }
+
+    public ResponseEntity<String> postReview(PostReviewDto review)
+    {
+        Optional<User> optionalUser=userRepository.findById(review.getUserId());
+        if (optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+
+        Optional<Book> optionalBook=bookRepository.findById(review.getBookId());
+        if (optionalBook.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
+        
+        User user= optionalUser.get();
+        Book book= optionalBook.get();
+
+        reviewRepository.save(new Review(user, book, review.getRating(), review.getText()));
+        return ResponseEntity.ok("Review posted successfully");
+    }
+
+    
 }

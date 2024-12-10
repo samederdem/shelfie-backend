@@ -27,6 +27,13 @@ public class Review {
     private Integer rating;  // Rating between 0 and 10
     private String text;
 
+    public Review(User user, Book book, Integer rating, String text)
+    {
+        this.user=user;
+        this.book=book;
+        this.rating=rating;
+        this.text=text;
+    }
 
     public Long getId(){return id;}
     public void setId(Long id){this.id=id;}
