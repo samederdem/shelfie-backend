@@ -35,7 +35,7 @@ public class MatchController {
         return matchService.rejectMatchUserGroup(userId, groupId);
     }
 
-    @PostMapping("/all/{userId}")
+    @GetMapping("/all/{userId}")
     public List<MatchRequestDto> getMatchRequests(@PathVariable Long userId) {
         return matchService.getMatchRequests(userId);
     }
