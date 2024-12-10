@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,9 @@ public class GroupService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private GenreRepository genreRepository;
+
     public GroupResponseDto getGroupDetails(Long groupId) {
 
         Group group = groupRepository.findById(groupId)
@@ -30,6 +34,7 @@ public class GroupService {
         return response;
     }
 
+    @Transactional
     public ResponseEntity<String> createGroup(CreateGroupDto groupInfo)
     {
         Optional<User> optionalAdmin=userRepository.findById(groupInfo.getAdminId());
@@ -37,7 +42,13 @@ public class GroupService {
 
         User admin= optionalAdmin.get();
 
-        groupRepository.save(new Group(admin, groupInfo.getName(), groupInfo.getPp(), groupInfo.getBio()));
+        Group group = groupRepository.save(new Group(admin, groupInfo.getName(), groupInfo.getPp(), groupInfo.getBio()));
+        
+
+        for (Long genreId: groupInfo.getGenres())
+        {
+            groupRepository.insertGenreGroup(genreId, group.getId());
+        }
         return ResponseEntity.ok("Group created successfully");
 
 

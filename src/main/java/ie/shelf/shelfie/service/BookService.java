@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
+
 @Service
 public class BookService {
 
@@ -49,7 +49,8 @@ public class BookService {
     {
         return bookRepository.findByNameContainingIgnoreCase(searchStr);
     }
-
+    
+    @Transactional
     public ResponseEntity<String> postReview(PostReviewDto review)
     {
         Optional<User> optionalUser=userRepository.findById(review.getUserId());
