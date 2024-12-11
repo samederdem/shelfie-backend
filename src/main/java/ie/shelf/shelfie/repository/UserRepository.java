@@ -131,7 +131,25 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = q, nativeQuery = true)
     Optional<User> getMatchUser(Long userId);
 
-    @Query("SELECT gu.group FROM GroupUser gu WHERE gu.user.id=:userId")//placeholder
-    Optional<Group> getMatchGroup(Long userId);
+    @Query(value ="WITH user_genres AS (" +
+    "    SELECT ug.genre_id" +
+    "    FROM genre_user ug" +
+    "    WHERE ug.user_id = :userId), " +
+    "matching_groups AS (" +
+    "    SELECT DISTINCT gg.group_id" +
+    "    FROM genre_group gg" +
+    "    WHERE gg.genre_id IN (SELECT genre_id FROM genre_user)), " +
+    "excluded_groups AS (" +
+    "    SELECT mg.group_id" +
+    "    FROM matching_groups mg" +
+    "    LEFT JOIN group_user gu ON gu.group_id = mg.group_id AND gu.user_id = :userId" +
+    "    WHERE gu.user_id IS NULL) " +
+    "SELECT g.id, g.name, g.bio, g.pp " +
+    "FROM excluded_groups eg " +
+    "JOIN groups g ON g.id = eg.group_id " +
+    "LEFT JOIN users u ON u.id = g.admin " +
+    "ORDER BY g.id " +
+    "LIMIT 1", nativeQuery = true )//placeholder
+    List<Object[]> getMatchGroup(Long userId);
 
 }

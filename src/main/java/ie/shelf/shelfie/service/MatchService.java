@@ -124,12 +124,20 @@ public class MatchService {
 
     public ResponseEntity<?> getMatchGroup(Long userId)
     {
-        Optional<Group> optionalGroup = userRepository.getMatchGroup(userId);
-        if(optionalGroup.isEmpty())
-        {
+        List<Object[]> results = userRepository.getMatchGroup(userId);
+
+        if (results.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No group for match found");
         }
-        return ResponseEntity.ok(optionalGroup.get());
+
+        Object[] row = results.get(0);  // Get the first row (or you could loop through if needed)
+
+        Long groupId = (Long) row[0];
+        String name = (String) row[1];
+        String bio = (String) row[2];
+        String pp = (String) row[3];
+
+        return ResponseEntity.ok(new GroupMatchDto(groupId, name, pp, bio));
 
     }
 }
