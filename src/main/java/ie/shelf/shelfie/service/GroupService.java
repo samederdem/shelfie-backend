@@ -51,7 +51,7 @@ public class GroupService {
         
         groupRepository.insertGenresGroup(groupInfo.getGenres(), group.getId());
         
-        //messagesGroupService.sendMessageGroup(new SendMessageDto(admin.getId(), group.getId(), "Welcome to "+group.getName()));
+        messagesGroupService.sendMessageGroup(new SendMessageDto(admin.getId(), group.getId(), "Welcome to "+group.getName()));
         return ResponseEntity.ok("Group created successfully");
 
 
