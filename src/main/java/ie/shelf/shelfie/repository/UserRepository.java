@@ -102,4 +102,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT new ie.shelf.shelfie.MatchRequestDto(mg.user, mg.group) FROM MatchGroup mg WHERE mg.group.admin.id=:userId AND mg.state=0")
     List<MatchRequestDto> getMatchRequestsGroup(Long userId);
+
+    @Query("SELECT u FROM User u WHERE u.id=:userId")//placeholder
+    Optional<User> getMatchUser(Long userId);
+
+    @Query("SELECT gu.group FROM GroupUser gu WHERE gu.user.id=:userId")//placeholder
+    Optional<Group> getMatchGroup(Long userId);
 }

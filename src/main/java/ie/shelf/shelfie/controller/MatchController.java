@@ -39,5 +39,17 @@ public class MatchController {
     public List<MatchRequestDto> getMatchRequests(@PathVariable Long userId) {
         return matchService.getMatchRequests(userId);
     }
+
+    @GetMapping("/get/user/{userId}")
+    public ResponseEntity<?> getMatchUser(@PathVariable Long userId)
+    {
+        return matchService.getMatchUser(userId);
+    } 
+
+    @GetMapping("/get/group/{userId}")
+    public ResponseEntity<?> getMatchGroup(@PathVariable Long userId)
+    {
+        return matchService.getMatchGroup(userId);
+    } 
     
 }

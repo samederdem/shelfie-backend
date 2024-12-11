@@ -106,5 +106,27 @@ public class MatchService {
         return combinedMatches;
     }
 
+    public ResponseEntity<?> getMatchUser(Long userId)
+    {
+        Optional<User> optionalUser = userRepository.getMatchUser(userId);
+        if(optionalUser.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No user for match found");
+        }
+        return ResponseEntity.ok(optionalUser.get());
+
+    }
+
+    public ResponseEntity<?> getMatchGroup(Long userId)
+    {
+        Optional<Group> optionalGroup = userRepository.getMatchGroup(userId);
+        if(optionalGroup.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No group for match found");
+        }
+        return ResponseEntity.ok(optionalGroup.get());
+
+    }
+
     
 }
