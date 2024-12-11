@@ -22,6 +22,9 @@ public class GroupService {
     @Autowired
     private GenreRepository genreRepository;
 
+    @Autowired
+    private MessagesGroupService messagesGroupService;
+
     public GroupResponseDto getGroupDetails(Long groupId) {
 
         Group group = groupRepository.findById(groupId)
@@ -48,6 +51,7 @@ public class GroupService {
         
         groupRepository.insertGenresGroup(groupInfo.getGenres(), group.getId());
         
+        //messagesGroupService.sendMessageGroup(new SendMessageDto(admin.getId(), group.getId(), "Welcome to "+group.getName()));
         return ResponseEntity.ok("Group created successfully");
 
 
