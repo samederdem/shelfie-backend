@@ -103,9 +103,35 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new ie.shelf.shelfie.MatchRequestDto(mg.user, mg.group) FROM MatchGroup mg WHERE mg.group.admin.id=:userId AND mg.state=0")
     List<MatchRequestDto> getMatchRequestsGroup(Long userId);
 
-    @Query("SELECT u FROM User u WHERE u.id=:userId")//placeholder
+    String q = "WITH user_vector AS ( " +
+        "    SELECT ug.user_id, ug.genre_id, COALESCE(SUM(ug.value), 0) / COUNT(r.id) AS normalized_value " +
+        "    FROM genre_user ug " +
+        "    LEFT JOIN reviews r ON r.user_id = ug.user_id " +
+        "    WHERE ug.user_id = :userId " +
+        "    GROUP BY ug.user_id, ug.genre_id), " +
+        "other_users_vectors AS ( " +
+        "    SELECT ug.user_id, ug.genre_id, COALESCE(SUM(ug.value), 0) / COUNT(r.id) AS normalized_value " +
+        "    FROM genre_user ug " +
+        "    LEFT JOIN reviews r ON r.user_id = ug.user_id " +
+        "    WHERE ug.user_id != :userId " +
+        "    GROUP BY ug.user_id, ug.genre_id), " +
+        "distance_calculation AS ( " +
+        "    SELECT o.user_id AS other_user_id, SUM(POWER(u.normalized_value - o.normalized_value, 2)) AS squared_diff_sum " +
+        "    FROM user_vector u " +
+        "    JOIN other_users_vectors o ON u.genre_id = o.genre_id " +
+        "    GROUP BY o.user_id), " +
+        "closest_users AS ( " +
+        "    SELECT dc.other_user_id, SQRT(dc.squared_diff_sum) AS distance " +
+        "    FROM distance_calculation dc) " +
+        "SELECT u.id, u.name, u.bio, u.pp " +
+        "FROM closest_users cu " +
+        "JOIN users u ON u.id = cu.other_user_id " +
+        "ORDER BY cu.distance ASC " +
+        "LIMIT 1";
+    @Query(value = q, nativeQuery = true)
     Optional<User> getMatchUser(Long userId);
 
     @Query("SELECT gu.group FROM GroupUser gu WHERE gu.user.id=:userId")//placeholder
     Optional<Group> getMatchGroup(Long userId);
+
 }

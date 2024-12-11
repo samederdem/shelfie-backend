@@ -10,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.AbstractMap;
+import java.util.Comparator;
 
 @Service
 public class MatchService {
@@ -18,6 +22,8 @@ public class MatchService {
     private UserRepository userRepository;
     @Autowired
     private MessagesUserService messagesUserService;
+    //@Autowired
+    //private UserService userService;
 
     @Transactional
     public ResponseEntity<String> matchUsers(Long id1, Long id2)
@@ -111,10 +117,9 @@ public class MatchService {
         Optional<User> optionalUser = userRepository.getMatchUser(userId);
         if(optionalUser.isEmpty())
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No user for match found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No User for match found");
         }
         return ResponseEntity.ok(optionalUser.get());
-
     }
 
     public ResponseEntity<?> getMatchGroup(Long userId)
@@ -127,6 +132,6 @@ public class MatchService {
         return ResponseEntity.ok(optionalGroup.get());
 
     }
-
-    
 }
+    
+
