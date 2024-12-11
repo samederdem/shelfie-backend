@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+
 import java.util.List;
 import java.util.Comparator;
 import java.util.ArrayList;
@@ -75,9 +77,25 @@ public class UserService {
             existingUser.setPp(updatedUser.getPp());
         }
 
+        if (updatedUser.getName() != null) {
+            existingUser.setName(updatedUser.getName());
+        }
+
+
+
         userRepository.save(existingUser);
 
         return ResponseEntity.ok("User updated successfully");
+    }
+
+    public ResponseEntity<?> authUser(String token)
+    {
+        GoogleIdToken verifiedToken=Auth.verifyToken(token);
+        if(verifiedToken==null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        String userEmail=Auth.getEmail(verifiedToken);
+        Optional<User> optionalUser = userRepository.findByEmail(userEmail);
+        if (optionalUser.isEmpty()) return ResponseEntity.ok(userRepository.save(new User(userEmail)));
+        return ResponseEntity.ok(optionalUser.get());
     }
     
 }

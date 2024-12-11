@@ -10,6 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByEmail(String userEmail);
+    
     @Query("SELECT g.name FROM Genre g " +
         "JOIN GenreBook gb ON gb.genre.id = g.id " +
         "JOIN Review r ON r.book.id = gb.book.id " +

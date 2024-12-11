@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "users")  // Explicit table name
@@ -17,6 +18,16 @@ public class User {
     private String pp;  // Profile Picture URL or path
     private String bio;
 
+    @Column(unique = true)
+    private String email;
+
+    public User(){}
+
+    public User(String email)
+    {
+        this.email=email;
+    }
+
     public Long getId(){return id;}
     public void setId(Long id){this.id=id;}
 
@@ -28,6 +39,9 @@ public class User {
 
     public String getBio(){return bio;}
     public void setBio(String bio){this.bio=bio;}
+
+    public String getEmail(){return email;}
+    public void setEmail(String email){this.email=email;}
 
     // Getters and Setters
 }

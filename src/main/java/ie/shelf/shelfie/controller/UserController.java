@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -29,5 +30,11 @@ public class UserController {
     public ResponseEntity<String> editUserProfile(@RequestBody User updatedUser)
     {
         return userService.editUserProfile(updatedUser);
+    }
+
+    @PostMapping("/user/auth/{token}")
+    public ResponseEntity<?> authUser(@PathVariable String token)
+    {
+        return userService.authUser(token);
     }
 }
