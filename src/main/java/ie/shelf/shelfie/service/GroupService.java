@@ -29,7 +29,7 @@ public class GroupService {
 
         List<User> members = groupRepository.findUserByGroup(group);
 
-        GroupResponseDto response = new GroupResponseDto(group.getId(), group.getName(), group.getPp(), group.getBio(), members);
+        GroupResponseDto response = new GroupResponseDto(group.getId(), group.getName(), group.getPp(), group.getBio(), group.getAdmin().getId(), members);
 
         return response;
     }

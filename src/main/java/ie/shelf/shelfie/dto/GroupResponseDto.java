@@ -7,14 +7,16 @@ public class GroupResponseDto {
     private String name;
     private String pp;
     private String bio;
+    private Long admin;
     private List<User> members;
 
     // Constructors, Getters, and Setters
-    public GroupResponseDto(Long id, String name, String pp, String bio, List<User> members) {
+    public GroupResponseDto(Long id, String name, String pp, String bio,Long admin, List<User> members) {
         this.id= id;
         this.name = name;
         this.pp = pp;
         this.bio= bio;
+        this.admin = admin;
         this.members=members;
     }
 
@@ -29,6 +31,9 @@ public class GroupResponseDto {
 
     public String getBio() {return bio;}
     public void setBio(String bio) {this.bio=bio;}
+
+    public Long getAdmin() {return admin;}
+    public void setAdmin(Long admin) {this.admin=admin;}
 
     public List<User> getMembers() {return members;}
     public void setMembers(List<User> members) {this.members=members;}
