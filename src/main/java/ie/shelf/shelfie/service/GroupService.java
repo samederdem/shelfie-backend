@@ -77,4 +77,32 @@ public class GroupService {
         return ResponseEntity.ok("Group updated successfully");
     }
 
+    @Transactional
+    public ResponseEntity<String> kickUser(Long groupId, Long userId)
+    {
+        Optional<Group> optionalGroup = groupRepository.findById(groupId);
+
+        if (optionalGroup.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Group not found");
+        }
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        Group  existingGroup = optionalGroup.get();
+        User  existingUser = optionalUser.get();
+        if (existingGroup.getAdmin().getId() == existingUser.getId()){
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Kicking admin from group not allowed");
+        }
+
+        Integer isMember= groupRepository.findMemberInGroup(existingGroup, existingUser);
+        if (isMember == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found in group");
+        }
+        groupRepository.deleteMember(existingGroup, existingUser);
+
+        return ResponseEntity.ok("Group updated successfully");
+    }
+
+
 }

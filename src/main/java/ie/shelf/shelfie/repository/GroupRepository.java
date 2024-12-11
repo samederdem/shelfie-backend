@@ -15,6 +15,16 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
         "WHERE group= :group")
     List<User> findUserByGroup(Group group);
 
+    @Query("SELECT COUNT(user)" +
+            "FROM GroupUser " +
+            "WHERE group = :group AND " +
+            "user = :user ")
+    Integer findMemberInGroup(Group group, User user);
+
+    @Modifying
+    @Query("DELETE FROM GroupUser gu WHERE gu.group = :group AND gu.user = :user")
+    void deleteMember(Group group, User user);
+
     @Modifying
     @Query(value = "INSERT INTO genre_group (group_id, genre_id) " +
                "SELECT :groupId, g.id " +

@@ -28,4 +28,9 @@ public class GroupController {
     {
         return groupService.editGroupProfile(updatedGroup);
     }
+    @PostMapping("/kick/{groupId}/{userId}")
+    public ResponseEntity<String> kickUser(@PathVariable Long groupId, @PathVariable Long userId)
+    {
+        return groupService.kickUser(groupId, userId);
+    }
 }
