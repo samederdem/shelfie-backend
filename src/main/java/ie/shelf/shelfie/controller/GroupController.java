@@ -23,4 +23,9 @@ public class GroupController {
     {
         return groupService.createGroup(groupInfo);
     }
+    @PostMapping("/edit")
+    public ResponseEntity<String> editGroupProfile(@RequestBody GroupMatchDto updatedGroup)
+    {
+        return groupService.editGroupProfile(updatedGroup);
+    }
 }

@@ -52,4 +52,29 @@ public class GroupService {
 
 
     }
+
+    public ResponseEntity<String> editGroupProfile(GroupMatchDto updatedGroup)
+    {
+        Optional<Group> optionalGroup = groupRepository.findById(updatedGroup.getId());
+
+        if (optionalGroup.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Group not found");
+        }
+
+        Group existingGroup = optionalGroup.get();
+        if (updatedGroup.getBio() != null) {
+        existingGroup.setBio(updatedGroup.getBio());
+        }
+        if (updatedGroup.getName() != null) {
+        existingGroup.setName(updatedGroup.getName());
+        }
+        if (updatedGroup.getPp() != null) {
+        existingGroup.setPp(updatedGroup.getPp());
+        }
+
+        groupRepository.save(existingGroup);
+
+        return ResponseEntity.ok("Group updated successfully");
+    }
+
 }
