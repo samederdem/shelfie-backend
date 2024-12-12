@@ -21,6 +21,8 @@ public class MatchService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private GroupRepository groupRepository;
+    @Autowired
     private MessagesUserService messagesUserService;
     //@Autowired
     //private UserService userService;
@@ -82,6 +84,9 @@ public class MatchService {
         } else {
             // Match exists, update state if it's 0
             userRepository.updateMatchGroupState(userId, groupId);
+            groupRepository.insertGroupUser(userId, groupId);
+
+
         }
         return ResponseEntity.ok("matches_group table updates successfully");
     }
@@ -99,7 +104,7 @@ public class MatchService {
 
             userRepository.updateMatchGroupReject(userId, groupId);
         }
-        return ResponseEntity.ok("matches_group table updates successfully");
+        return ResponseEntity.ok("matches_group table updated successfully");
     }
 
     public List<MatchRequestDto> getMatchRequests(Long userId)
