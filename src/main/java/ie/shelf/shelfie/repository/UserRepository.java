@@ -103,7 +103,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new ie.shelf.shelfie.MatchRequestDto(m.user1) FROM Match m WHERE m.user2.id=:userId AND m.state=0")
     List<MatchRequestDto> getMatchRequestsUser(Long userId);
 
-    @Query("SELECT new ie.shelf.shelfie.MatchRequestDto(mg.user, mg.group) FROM MatchGroup mg WHERE mg.group.admin.id=:userId AND mg.state=0")
+    @Query("SELECT new ie.shelf.shelfie.MatchRequestDto(mg.user, new ie.shelf.shelfie.SimpleGroupResponseDto(mg.group.id, mg.group.name, mg.group.pp, mg.group.bio, mg.group.admin.id)) FROM MatchGroup mg WHERE mg.group.admin.id=:userId AND mg.state=0")
     List<MatchRequestDto> getMatchRequestsGroup(Long userId);
 
     String q = "WITH user_vector AS ( " +
