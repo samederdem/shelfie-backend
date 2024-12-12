@@ -126,7 +126,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         "closest_users AS ( " +
         "    SELECT dc.other_user_id, SQRT(dc.squared_diff_sum) AS distance " +
         "    FROM distance_calculation dc) " +
-        "SELECT u.id, u.name, u.bio, u.pp " +
+        "SELECT u.id, u.name, u.bio, u.pp, u.email" +
         "FROM closest_users cu " +
         "JOIN users u ON u.id = cu.other_user_id " +
         "ORDER BY cu.distance ASC " +
