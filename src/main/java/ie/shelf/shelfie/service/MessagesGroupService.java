@@ -21,7 +21,7 @@ public class MessagesGroupService {
         Group group = groupRepository.findById(groupId)
             .orElseThrow(() -> new RuntimeException("Group not found with ID: " + groupId));
         List<MessageGroupDto> messages = messagesGroupRepository.getMessagesGroup(userId, groupId);
-        return new MessagesGroupResponseDto(group, messages);
+        return new MessagesGroupResponseDto(new SimpleGroupResponseDto(group.getId(), group.getName(), group.getPp(), group.getBio(), group.getAdmin().getId()), messages);
 
     }
 
